@@ -3,6 +3,11 @@
 Not anything good or impressive, but a totally useless program using a really old library.
 I wanted to get a bit more experience in C so I wrote this little network visualisation tool, it uses the libgraphC library ([https://github.com/Prashant47/libgraph](https://github.com/Prashant47/libgraph)) and a little bit of bash to do the network scanning.
 
+## Installation + usage
+Once you've cloned the repository, cd into it and run these commands
+`qmake -o network-sonar-c`
+`make`
+`./network-sonar-c`
 
 ## Todo:
  - [ ] Fix flickering (possibly with double buffer?)
