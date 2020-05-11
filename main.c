@@ -54,8 +54,8 @@ int main(int argc, char *argv[])
     char command[140] = "for ip in `seq 1 254`; do ping -c 1 ";
     strcat(command, ipRange);
     strcat(command, ".$ip | grep '64 bytes' | cut -d ' ' -f 4 | tr -d ':' & done");
-//    fflush(stdout);
-    printf("Running command %s \n", command);
+    fflush(stdout);
+    printf("Running command: '%s' \n", command);
     char *networkIPs;
     networkIPs = getCommandOutput(command);
 
@@ -64,11 +64,8 @@ int main(int argc, char *argv[])
         if (strlen(&networkIPs[i]) != 0) {
             devices++;
         }
-
-        printf(&networkIPs[i]);
-
-
     }
+    printf("Devices collected.\nDisplaying data.");
 
     initgraph(&gd,&gm,NULL);
     struct coordinate centre;
@@ -112,6 +109,6 @@ int main(int argc, char *argv[])
     }
 
     closegraph();
-
+    printf("Exiting.");
     return 0;
 }
