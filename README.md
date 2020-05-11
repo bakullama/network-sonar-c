@@ -11,5 +11,6 @@ Once you've cloned the repository, cd into it and run these commands
 
 ## Todo:
  - [ ] Fix flickering (possibly with double buffer?)
+ - [ ] Fix occasional generation of point outside of circle
  - [ ]  Add more information about the network, ie hostname or OS
  - [ ] Stop "libgraphC: xcb_io.c:260: poll_for_event: Assertion `!xcb_xlib_threads_sequence_lost' failed." error message
