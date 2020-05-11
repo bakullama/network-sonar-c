@@ -15,7 +15,6 @@ struct coordinate {
 };
 
 char **getCommandOutput(char *cmd) {
-//    char* output[254];
     char* output = malloc(sizeof(char) * 4064);
     char* outputLine;
     char buf[BUFSIZE];
@@ -35,17 +34,20 @@ char **getCommandOutput(char *cmd) {
 }
 
 
-
-int main()
+int main(int argc, char *argv[])
 {
+    if (argc != 2) {
+        printf("Invalid number of arguments.\nUsage: ./network-sonar-c <first 3 octets of ip, e.g. 192.168.1>\n");
+        exit(EXIT_FAILURE);
+    }
     srand((unsigned int)time(NULL));
     unsigned char* doubleBuffer = (unsigned char *) malloc(640*480); // 300 kb
     if (doubleBuffer == NULL) {
         printf("Not enough memory for double buffer.\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
-
+    char *ipRange = argv[1];
     int gd = DETECT;
     int gm;
     XInitThreads();
@@ -86,12 +88,6 @@ int main()
         points[i].x = centre.x + (rand() % 340) - 170;
         points[i].y = centre.y + (rand() % 340) - 170;
     }
-
-
-
-
-
-
 
 
     while (1){
