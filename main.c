@@ -49,15 +49,16 @@ int main()
     int gd = DETECT;
     int gm;
     XInitThreads();
-    char *arr;
-    arr = getCommandOutput("/home/nomad/Development/Network-Sonar/Network-Sonar/scan_ip_range.sh 10.0.0"); // "/home/nomad/Development/Network-Sonar/Network-Sonar/scan_ip_range.sh 10.0.0"
+    char command[104] = "for ip in `seq 1 254`; do ping -c 1 10.0.0.$ip | grep '64 bytes' | cut -d ' ' -f 4 | tr -d ':' & done";
+    char *networkIPs;
+    networkIPs = getCommandOutput(command);
 
-//    printf(&arr[0]);
+//    printf(&networkIPs[0]);
 
 //    char str[5];
     int devices = 0;
     for (int i = 0; i < 4064; i = i + 16) {
-        if (strlen(&arr[i]) != 0) {
+        if (strlen(&networkIPs[i]) != 0) {
             devices++;
         }
 //        sprintf(str, "%d", i);
@@ -65,7 +66,7 @@ int main()
 //        printf(str);
 //        fflush(stdout);
 
-        printf(&arr[i]);
+        printf(&networkIPs[i]);
 
 
     }
@@ -111,7 +112,7 @@ int main()
             for (int j = 0; j < devices; ++j) {
                 circle(points[j].x + 50, points[j].y, 5);
                 floodfill(points[j].x + 50, points[j].y, GREEN);
-                outtextxy(points[j].x + 55, points[j].y, &arr[j*16]);
+                outtextxy(points[j].x + 55, points[j].y, &networkIPs[j*16]);
             }
             delay(50);
         }
