@@ -53,18 +53,11 @@ int main()
     char *networkIPs;
     networkIPs = getCommandOutput(command);
 
-//    printf(&networkIPs[0]);
-
-//    char str[5];
     int devices = 0;
     for (int i = 0; i < 4064; i = i + 16) {
         if (strlen(&networkIPs[i]) != 0) {
             devices++;
         }
-//        sprintf(str, "%d", i);
-//        str[4] = '\n';
-//        printf(str);
-//        fflush(stdout);
 
         printf(&networkIPs[i]);
 
@@ -102,7 +95,6 @@ int main()
 
 
     while (1){
-//        getCommandOutput("ls");
 
         for (int i = 0; i < pointPrecision; ++i) {
             setcolor(GREEN);
@@ -119,8 +111,6 @@ int main()
 
     }
 
-
-//    delay(5000);
     closegraph();
 
     return 0;
