@@ -1,6 +1,6 @@
 # Network sonar thingy
 
-Not anything good or impressive, but a totally useless program using a really old library.
+Not anything good or impressive, but a totally useless program using a really old library, designed to look like those SONAR screens you see on submarines in the movies.
 I wanted to get a bit more experience in C so I wrote this little network visualisation tool, it uses the libgraphC library ([https://github.com/Prashant47/libgraph](https://github.com/Prashant47/libgraph)) and a little bit of bash to do the network scanning.
 
 ## Installation + usage
