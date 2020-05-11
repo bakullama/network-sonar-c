@@ -51,9 +51,10 @@ int main(int argc, char *argv[])
     int gd = DETECT;
     int gm;
     XInitThreads();
-    char *command = "for ip in `seq 1 254`; do ping -c 1 ";
+    char command[140] = "for ip in `seq 1 254`; do ping -c 1 ";
     strcat(command, ipRange);
-    strcat(command, "$ip | grep '64 bytes' | cut -d ' ' -f 4 | tr -d ':' & done");
+    strcat(command, ".$ip | grep '64 bytes' | cut -d ' ' -f 4 | tr -d ':' & done");
+//    fflush(stdout);
     printf("Running command %s \n", command);
     char *networkIPs;
     networkIPs = getCommandOutput(command);
