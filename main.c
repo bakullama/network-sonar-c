@@ -93,8 +93,9 @@ int main(int argc, char *argv[])
         points[i].y = centre.y + (rand() % 340) - 170;
     }
 
+    int stop = 0;
 
-    while (1){
+    while (!stop){
 
         for (int i = 0; i < pointPrecision; ++i) {
             setcolor(GREEN);
@@ -108,6 +109,8 @@ int main(int argc, char *argv[])
             }
             delay(50);
         }
+
+        stop = grgetche();
 
     }
 
