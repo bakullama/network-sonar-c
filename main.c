@@ -124,20 +124,20 @@ int main(int argc, char *argv[])
     while (!stop){
         setcolor(GREEN);
 
-        for (int j = 0; j < devices; ++j) {
-            circle(points[j].x + 50, points[j].y, 5);
-            floodfill(points[j].x + 50, points[j].y, GREEN);
-            outtextxy(points[j].x + 55, points[j].y, &networkips[j*16]);
-        }
+
+
 
         for (int i = 0; i < pointprecision; ++i) {
+            for (int j = 0; j < devices; ++j) {
+                circle(points[j].x + 50, points[j].y, 5);
+                floodfill(points[j].x + 50, points[j].y, GREEN);
+                outtextxy(points[j].x + 55, points[j].y, &networkips[j*16]);
+            }
 
-            cleardevice();
             line(centre.x, centre.y, circumferencepoints[i].x, circumferencepoints[i].y);
             circle(centre.x, centre.y, radius);
-
-
             delay(50);
+            cleardevice();
         }
 
 
