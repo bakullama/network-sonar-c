@@ -40,9 +40,9 @@ int kbhit(void)
     return 0;
 }
 
-char **getCommandOutput(char *cmd) {
+char **getcommandoutput(char *cmd) {
     char* output = malloc(sizeof(char) * 4064);
-    char* outputLine;
+    char* outputline;
     char buf[BUFSIZE];
     int counter = 0;
     FILE *fp;
@@ -50,8 +50,8 @@ char **getCommandOutput(char *cmd) {
     fp = popen(cmd, "r");
 
     while (fgets(buf, BUFSIZE, fp) != NULL) {
-        outputLine = buf;
-        strcpy(&output[counter * 16], outputLine);
+        outputline = buf;
+        strcpy(&output[counter * 16], outputline);
         counter++;
     }
 
@@ -66,50 +66,50 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    int gd = DETECT;
-    int gm;
-
     srand((unsigned int)time(NULL));
-    unsigned char* doubleBuffer = (unsigned char *) malloc(307200); // 300 kb
+    unsigned char* doublebuffer = (unsigned char *) malloc(307200); // 300 kb
 
-    if (doubleBuffer == NULL) {
+    if (doublebuffer == NULL) {
         printf("Not enough memory for double buffer.\n");
         exit(EXIT_FAILURE);
     }
 
-    char *ipRange = argv[1];
+    char *iprange = argv[1];
     char command[140] = "for ip in `seq 1 254`; do ping -c 1 ";
-    strcat(command, ipRange);
+    strcat(command, iprange);
     strcat(command, ".$ip | grep '64 bytes' | cut -d ' ' -f 4 | tr -d ':' & done");
     fflush(stdout);
     printf("Running command: '%s' \n", command);
 
-    char *networkIPs;
-    networkIPs = getCommandOutput(command);
+    char *networkips;
+    networkips = getcommandoutput(command);
 
     int devices = 0;
     for (int i = 0; i < 4064; i = i + 16) {
-        if (strlen(&networkIPs[i]) != 0) {
+        if (strlen(&networkips[i]) != 0) {
             devices++;
         }
     }
 
     fflush(stdout);
     printf("Devices collected.\nDisplaying data.");
-    initgraph(&gd, &gm, NULL);
+
+    int graphdriver = DETECT;
+    int graphmode;
+    initgraph(&graphdriver, &graphmode, NULL);
     struct coordinate centre;
     centre.x = getmaxx() / 2;
     centre.y = getmaxy() / 2;
     int radius = 230;
 
-    int pointPrecision = 360;
+    int pointprecision = 360;
 
-    struct coordinate circumferencePoints[pointPrecision];
+    struct coordinate circumferencepoints[pointprecision];
     long double shift = (pi / 180);
 
-    for (int i = 0; i < pointPrecision; ++i) {
-        circumferencePoints[i].x = centre.x + cos(shift * i) * radius;
-        circumferencePoints[i].y = centre.y + sin(shift * i) * radius;
+    for (int i = 0; i < pointprecision; ++i) {
+        circumferencepoints[i].x = centre.x + cos(shift * i) * radius;
+        circumferencepoints[i].y = centre.y + sin(shift * i) * radius;
     }
 
 
@@ -122,21 +122,25 @@ int main(int argc, char *argv[])
     int stop = 0;
 
     while (!stop){
+        setcolor(GREEN);
 
-        for (int i = 0; i < pointPrecision; ++i) {
-            setcolor(GREEN);
+        for (int j = 0; j < devices; ++j) {
+            circle(points[j].x + 50, points[j].y, 5);
+            floodfill(points[j].x + 50, points[j].y, GREEN);
+            outtextxy(points[j].x + 55, points[j].y, &networkips[j*16]);
+        }
+
+        for (int i = 0; i < pointprecision; ++i) {
+
             cleardevice();
-            line(centre.x, centre.y, circumferencePoints[i].x, circumferencePoints[i].y);
+            line(centre.x, centre.y, circumferencepoints[i].x, circumferencepoints[i].y);
             circle(centre.x, centre.y, radius);
-            for (int j = 0; j < devices; ++j) {
-                circle(points[j].x + 50, points[j].y, 5);
-                floodfill(points[j].x + 50, points[j].y, GREEN);
-                outtextxy(points[j].x + 55, points[j].y, &networkIPs[j*16]);
-            }
+
+
             delay(50);
         }
 
-        stop = !kbhit();
+
 
     }
 
