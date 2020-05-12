@@ -14,31 +14,6 @@ struct coordinate {
     double y;
 };
 
-int kbhit(void)
-{
-    struct termios oldt, newt;
-    int ch;
-    int oldf;
-
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
-
-    ch = getchar();
-
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    fcntl(STDIN_FILENO, F_SETFL, oldf);
-
-    if(ch != EOF) {
-        ungetc(ch, stdin);
-        return 1;
-    }
-
-    return 0;
-}
 
 char **getcommandoutput(char *cmd) {
     char* output = malloc(sizeof(char) * 4064);
@@ -126,21 +101,32 @@ int main(int argc, char *argv[])
 
 
 
-
-        for (int i = 0; i < pointprecision; ++i) {
+        for (int i = 0; i < pointprecision - 1; ++i) {
             for (int j = 0; j < devices; ++j) {
                 circle(points[j].x + 50, points[j].y, 5);
                 floodfill(points[j].x + 50, points[j].y, GREEN);
                 outtextxy(points[j].x + 55, points[j].y, &networkips[j*16]);
             }
 
-            line(centre.x, centre.y, circumferencepoints[i].x, circumferencepoints[i].y);
+            struct coordinate currentpoint;
+            currentpoint.x = circumferencepoints[i].x;
+            currentpoint.y = circumferencepoints[i].y;
+
+            struct coordinate nextpoint;
+            nextpoint.x = circumferencepoints[i+1].x;
+            nextpoint.y = circumferencepoints[i+1].y;
+
+
+            setcolor(BLACK);
+            line(centre.x, centre.y, currentpoint.x, currentpoint.y);
+            setcolor(GREEN);
+            line(centre.x, centre.y, nextpoint.x, nextpoint.y);
             circle(centre.x, centre.y, radius);
             delay(50);
-            cleardevice();
+
         }
 
-
+        cleardevice();
 
     }
 
