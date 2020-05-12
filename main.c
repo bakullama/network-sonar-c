@@ -29,7 +29,6 @@ char **getCommandOutput(char *cmd) {
         counter++;
     }
 
-
     return output;
 }
 
@@ -67,10 +66,10 @@ int main(int argc, char *argv[])
     }
     printf("Devices collected.\nDisplaying data.");
 
-    initgraph(&gd,&gm,NULL);
+    initgraph(&gd, &gm, NULL);
     struct coordinate centre;
-    centre.x = getmaxx() / 2; // 320
-    centre.y = getmaxy() / 2; // 240
+    centre.x = getmaxx() / 2;
+    centre.y = getmaxy() / 2;
     int radius = 230;
 
     int pointPrecision = 360;
