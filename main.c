@@ -39,22 +39,25 @@ int main(int argc, char *argv[])
         printf("Invalid number of arguments.\nUsage: ./network-sonar-c <first 3 octets of ip, e.g. 192.168.1>\n");
         exit(EXIT_FAILURE);
     }
+
+    int gd = DETECT;
+    int gm;
+
     srand((unsigned int)time(NULL));
-    unsigned char* doubleBuffer = (unsigned char *) malloc(640*480); // 300 kb
+    unsigned char* doubleBuffer = (unsigned char *) malloc(307200); // 300 kb
+
     if (doubleBuffer == NULL) {
         printf("Not enough memory for double buffer.\n");
         exit(EXIT_FAILURE);
     }
 
     char *ipRange = argv[1];
-    int gd = DETECT;
-    int gm;
-    XInitThreads();
     char command[140] = "for ip in `seq 1 254`; do ping -c 1 ";
     strcat(command, ipRange);
     strcat(command, ".$ip | grep '64 bytes' | cut -d ' ' -f 4 | tr -d ':' & done");
     fflush(stdout);
     printf("Running command: '%s' \n", command);
+
     char *networkIPs;
     networkIPs = getCommandOutput(command);
 
@@ -64,8 +67,9 @@ int main(int argc, char *argv[])
             devices++;
         }
     }
-    printf("Devices collected.\nDisplaying data.");
 
+    fflush(stdout);
+    printf("Devices collected.\nDisplaying data.");
     initgraph(&gd, &gm, NULL);
     struct coordinate centre;
     centre.x = getmaxx() / 2;
@@ -108,6 +112,7 @@ int main(int argc, char *argv[])
     }
 
     closegraph();
+
     printf("Exiting.");
     return 0;
 }
