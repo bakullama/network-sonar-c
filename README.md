@@ -5,8 +5,11 @@ I wanted to get a bit more experience in C so I wrote this little network visual
 
 ## Installation + usage
 Once you've cloned the repository, cd into it and run these commands
-`qmake -o network-sonar-c`
+
+`qmake -o Makefile network-sonar-c.pro`
+
 `make`
+
 `./network-sonar-c`
 
 ## Todo:
