@@ -10,6 +10,8 @@ Once you've cloned the repository, cd into it and run these commands
 `./network-sonar-c`
 
 ## Todo:
+ - [x] Add the ability to specify an IP range
+ - [x] Add command line support
  - [ ] Fix flickering (possibly with double buffer?)
  - [ ] Fix occasional generation of point outside of circle
  - [ ]  Add more information about the network, ie hostname or OS
