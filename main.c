@@ -1,10 +1,10 @@
 #include <graphics.h>
-#include <X11/Xlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+
 
 #define pi 3.141592653589793238462643383279502884197169399375105820974
 #define BUFSIZE 128
@@ -13,6 +13,32 @@ struct coordinate {
     double x;
     double y;
 };
+
+int kbhit(void)
+{
+    struct termios oldt, newt;
+    int ch;
+    int oldf;
+
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+
+    ch = getchar();
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    fcntl(STDIN_FILENO, F_SETFL, oldf);
+
+    if(ch != EOF) {
+        ungetc(ch, stdin);
+        return 1;
+    }
+
+    return 0;
+}
 
 char **getCommandOutput(char *cmd) {
     char* output = malloc(sizeof(char) * 4064);
@@ -110,7 +136,7 @@ int main(int argc, char *argv[])
             delay(50);
         }
 
-        stop = grgetche();
+        stop = !kbhit();
 
     }
 
