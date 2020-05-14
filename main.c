@@ -42,12 +42,6 @@ int main(int argc, char *argv[])
     }
 
     srand((unsigned int)time(NULL));
-    unsigned char* doublebuffer = (unsigned char *) malloc(307200); // 300 kb
-
-    if (doublebuffer == NULL) {
-        printf("Not enough memory for double buffer.\n");
-        exit(EXIT_FAILURE);
-    }
 
     char *iprange = argv[1];
     char command[140] = "for ip in `seq 1 254`; do ping -c 1 ";
