@@ -32,7 +32,7 @@ char **getcommandoutput(char *cmd) {
     return output;
 }
 
-void createpoints(struct coordinate* points, int devices, struct coordinate centre) {
+void generatepoints(struct coordinate* points, int devices, struct coordinate centre) {
 
     for (int i = 0; i < devices; ++i) {
         points[i].x = centre.x + (rand() % 340) - 170;
@@ -100,19 +100,18 @@ int main(int argc, char *argv[])
     int pointprecision = 360;
 
     struct coordinate circumferencepoints[pointprecision];
-    generatecirclepoints(circumferencepoints, pointprecision, radius, centre);
-
     struct coordinate points[devices];
     struct coordinate currentpoint;
     struct coordinate nextpoint;
 
-    createpoints(points, devices, centre);
+    generatecirclepoints(circumferencepoints, pointprecision, radius, centre);
+    generatepoints(points, devices, centre);
 
     while (1){
         setcolor(GREEN);
-
+        drawdevices(points, devices, networkips);
         for (int i = 0; i < pointprecision - 1; ++i) {
-            drawdevices(points, devices, networkips);
+
 
             currentpoint.x = circumferencepoints[i].x;
             currentpoint.y = circumferencepoints[i].y;
