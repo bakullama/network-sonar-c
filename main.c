@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #define pi 3.141592653589793238462643383279502884197169399375105820974
 #define BUFSIZE 128
 
@@ -31,6 +30,33 @@ char **getcommandoutput(char *cmd) {
     }
 
     return output;
+}
+
+void createpoints(struct coordinate* points, int devices, struct coordinate centre) {
+
+    for (int i = 0; i < devices; ++i) {
+        points[i].x = centre.x + (rand() % 340) - 170;
+        points[i].y = centre.y + (rand() % 340) - 170;
+    }
+
+}
+
+void drawdevices(struct coordinate* points, int devices, char* networkips) {
+    for (int j = 0; j < devices; ++j) {
+        circle(points[j].x + 50, points[j].y, 5);
+        floodfill(points[j].x + 50, points[j].y, GREEN);
+        outtextxy(points[j].x + 55, points[j].y, &networkips[j*16]);
+    }
+}
+
+void generatecirclepoints(struct coordinate* circumferencepoints, int pointprecision, int radius, struct coordinate centre) {
+    long double shift = (pi / 180);
+
+    for (int i = 0; i < pointprecision; ++i) {
+        circumferencepoints[i].x = centre.x + cos(shift * i) * radius;
+        circumferencepoints[i].y = centre.y + sin(shift * i) * radius;
+    }
+
 }
 
 
@@ -74,39 +100,24 @@ int main(int argc, char *argv[])
     int pointprecision = 360;
 
     struct coordinate circumferencepoints[pointprecision];
-    long double shift = (pi / 180);
-
-    for (int i = 0; i < pointprecision; ++i) {
-        circumferencepoints[i].x = centre.x + cos(shift * i) * radius;
-        circumferencepoints[i].y = centre.y + sin(shift * i) * radius;
-    }
-
+    generatecirclepoints(circumferencepoints, pointprecision, radius, centre);
 
     struct coordinate points[devices];
-    for (int i = 0; i < devices; ++i) {
-        points[i].x = centre.x + (rand() % 340) - 170;
-        points[i].y = centre.y + (rand() % 340) - 170;
-    }
+    struct coordinate currentpoint;
+    struct coordinate nextpoint;
 
-    int stop = 0;
+    createpoints(points, devices, centre);
 
-    while (!stop){
+    while (1){
         setcolor(GREEN);
 
-
-
         for (int i = 0; i < pointprecision - 1; ++i) {
-            for (int j = 0; j < devices; ++j) {
-                circle(points[j].x + 50, points[j].y, 5);
-                floodfill(points[j].x + 50, points[j].y, GREEN);
-                outtextxy(points[j].x + 55, points[j].y, &networkips[j*16]);
-            }
+            drawdevices(points, devices, networkips);
 
-            struct coordinate currentpoint;
             currentpoint.x = circumferencepoints[i].x;
             currentpoint.y = circumferencepoints[i].y;
 
-            struct coordinate nextpoint;
+
             nextpoint.x = circumferencepoints[i+1].x;
             nextpoint.y = circumferencepoints[i+1].y;
 
@@ -115,6 +126,7 @@ int main(int argc, char *argv[])
             line(centre.x, centre.y, currentpoint.x, currentpoint.y);
             setcolor(GREEN);
             line(centre.x, centre.y, nextpoint.x, nextpoint.y);
+
             circle(centre.x, centre.y, radius);
             delay(50);
 
