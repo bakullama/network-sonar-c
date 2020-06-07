@@ -18,7 +18,6 @@ char **getcommandoutput(char *cmd) {
     char* output = malloc(sizeof(char) * 4064);
     char* outputline;
     char buf[BUFSIZE];
-    int counter = 0;
     FILE *fp;
 
     fp = popen(cmd, "r");
@@ -26,7 +25,6 @@ char **getcommandoutput(char *cmd) {
     while (fgets(buf, BUFSIZE, fp) != NULL) {
         outputline = buf;
         strcpy(&output[counter * 16], outputline);
-        counter++;
     }
 
     return output;
@@ -109,9 +107,9 @@ int main(int argc, char *argv[])
 
     while (1){
         setcolor(GREEN);
-        drawdevices(points, devices, networkips);
-        for (int i = 0; i < pointprecision - 1; ++i) {
 
+        for (int i = 0; i < pointprecision - 1; ++i) {
+            drawdevices(points, devices, networkips);
 
             currentpoint.x = circumferencepoints[i].x;
             currentpoint.y = circumferencepoints[i].y;
